@@ -1,0 +1,22 @@
+#buttonContainer {
+  display: 'flex';
+  align-items: 'center';
+  padding: 5px 0;
+  font-size: 30px;
+  font-weight: bold;
+  border-radius: 10px;
+  box-shadow: 50px ;
+  user-select: none;
+  box-shadow: 0 2px 7px black;
+  border-width: 2px;
+  border-style: solid;
+  padding-right: 12px;
+}
+
+.anim {
+  &:active {
+    transform: scale(0.93);
+  }
+
+  transition: transform 0.1s, border-color 0.25s;
+}

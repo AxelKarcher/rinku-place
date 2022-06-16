@@ -1,91 +1,82 @@
 import {useState, useEffect} from 'react'
-import axios from 'axios'
-import DeleteIcon from '@mui/icons-material/Delete'
-import {CircularProgress} from '@mui/material'
 
 import './App.scss'
 import config from './config.json'
 import Button from './components/Button/Button'
 import TextField from './components/TextField/TextField'
+import useApi from './hooks/useApi'
+import deleteApi from './api/delete'
+import putApi from './api/put'
+import updateApi from './api/update'
+import Table from './components/Table/Table'
 
 const App = () => {
 
+  const {loading: deleteLoad, request: deleteReq} = useApi(deleteApi.deleteApi)
+  const {loading: putLoad, request: putReq} = useApi(putApi.putApi)
+  const {loading: updateLoad, request: updateReq} = useApi(updateApi.updateApi)
+
   const [str, setStr] = useState('')
-  const [data, setData] = useState()
   const [loading, setLoading] = useState(false)
+  const [entryInfos, setEntryInfos] = useState({})
 
-  useEffect(() => {testGet()}, [])
+  // useEffect(() => {handleGet()}, [])
 
-  const testPut = async () => {
-    setLoading(true)
-    await axios.put('http://localhost:8080/put', {label: str}).then(
-      (res) => console.log('putRes:', res))
+  useEffect(() => {
+    setLoading(deleteLoad || putLoad || updateLoad)
+  }, [deleteLoad, putLoad])
 
-    setLoading(false)
-    setStr('')
-    testGet()
-  }
+  // const handlePut = async () => {
+  //   // {name: 'Monster House', out: '2006', seen: 'Pre-2012', universe: '', score: 'vg'}
+  //   await putReq({label: str})
 
-  const testGet = async () => {
-    setLoading(true)
-    await axios.get('http://localhost:8080/get').then((res) => setData(res?.data))
-    setLoading(false)
-  }
+  //   setStr('')
+  //   handleGet()
+  // }
 
-  const testDelete = async (label) => {
-    setLoading(true)
-    await axios.delete('http://localhost:8080/delete/' + label).then(
-      (res) => console.log('deleteRes:', res))
+  // const handleDelete = async (id) => {
+  //   await deleteReq(id)
+  //   handleGet()
+  // }
 
-    setLoading(false)
-    testGet()
-  }
+  // const handleUpdate = async (id) => {
+  //   await updateReq(id)
+  //   handleGet()
+  // }
+
+  const filters = [
+    {label: 'Nom', field: 'name', width: '30%'},
+    {label: 'Année de sortie', field: 'out', width: '30%'},
+    {label: 'Vue en', field: 'seen', width: '15%'},
+    {label: 'Univers', field: 'universe', width: '20%'},
+    {label: 'Mention', field: 'score', width: '10%'}
+  ]
 
   return (
     <div id='appContainer' style={{backgroundColor: config.colors.background}}>
-      <div style={{display: 'flex', marginBottom: 20}}>
-        <TextField
-          value={str}
-          setter={setStr}
-          style={{marginRight: 20}}
-          action={() => testGet()}
-        />
-        <Button
-          disabled={str === ''}
-          style={{marginRight: 20}}
-          label='POST'
-          action={() => testPut()}
-        />
-        <Button
-          label='GET'
-          action={() => testGet()}
-        />
-      </div>
-      <div className='panel' style={{fontSize: 40}}>
-        {
-          loading
-          ?
-          <CircularProgress sx={{color: config.colors.primary}} />
-          :
-          data?.length === 0
-          ?
-          <div>No data</div>
-          :
-          data?.map((elem, i) => (
-            <div
-              key={i}
-              style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                marginBottom: i !== (data.length - 1) ? 20 : 0}}
-            >
-              <div style={{marginRight: 30}}>{elem.label}</div>
-              <DeleteIcon
-                style={{cursor: 'pointer', fontSize: 40}}
-                onClick={() => testDelete(elem.label)}
-              />
-            </div>
-          ))
-        }
-      </div>
+      {/*
+        <div style={{display: 'flex', marginBottom: 20}}>
+          <TextField
+            value={str}
+            setter={setStr}
+            style={{marginRight: 20}}
+            action={() => handleGet()}
+          />
+          <Button
+            disabled={str === ''}
+            style={{marginRight: 20}}
+            label='POST'
+            action={() => handlePut()}
+          />
+          <Button label='GET' action={() => handleGet()} />
+        </div>
+      */}
+      <Table
+        filters={filters}
+        endpoint='films'
+        title='Suivi de films'
+        width='60%'
+      />
     </div>
   )
 }

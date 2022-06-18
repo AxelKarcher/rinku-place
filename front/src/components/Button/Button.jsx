@@ -15,23 +15,19 @@ const Button = ({label, icon, action, disabled, style}) => {
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
       style={{
-        backgroundColor: disabled ? 'lightgray' : config.colors.primary,
+        backgroundColor: disabled ? 'grey' : config.colors.primary,
         cursor: disabled ? 'initial' : 'pointer',
-        color: disabled ? 'grey' : config.colors.text,
-        paddingLeft: icon ? 8 : 12,
-        borderColor: disabled ? config.colors.text :
-          isHover ? '#d3d3d3' : config.colors.primary,
+        color: disabled ? 'lightgrey' : config.colors.light,
+        borderColor: disabled ? 'grey' :
+          isHover ? config.light : config.colors.primary,
+        borderRadius: config.borderRadius,
         ...style
       }}
     >
-      {
-        icon &&
-        <span style={{marginRight: 10}}>{icon}</span>
-      }
-      {
-        label &&
-        <span>{label.toUpperCase()}</span>
-      }
+      <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+        {icon && <div style={{marginRight: label ? 7 : 0}}>{icon}</div>}
+        {label && <div>{label.toUpperCase()}</div>}
+      </div>
     </div>
   )
 }

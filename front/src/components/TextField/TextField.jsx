@@ -2,30 +2,40 @@ import OldTextField from '@mui/material/TextField'
 
 import config from '../../config.json'
 
-const TextField = ({value, setter, style, fullWidth, action}) => {
+const TextField = ({value, style, fullWidth, action,
+  label, disabled, isOptional}) => {
   return (
-    <OldTextField
-      fullWidth={fullWidth}
-      autoComplete='off'
-      style={{...style}}
-      value={value}
-      onChange={(e) => setter(e.target.value)}
-      onKeyPress={(e) => value !== '' && e.key === 'Enter' && action}
-      sx={{
-        '& .MuiOutlinedInput-root': {
-          '& fieldset': {
-            borderColor: config.colors.primary,
-          },
-          '&:hover fieldset': {
-            borderColor: config.colors.text,
-          },
-          '&.Mui-focused fieldset': {
-            borderColor: config.colors.text,
-          },
-        },
-        input: {color: config.colors.text}
-      }}
-    />
+    <div style={{display: 'flex', flexDirection: 'column'}}>
+      {
+        label &&
+        <div style={{display: 'flex', alignItems: 'flex-end'}}>
+          <div style={{fontSize: 20}}>{label}</div>
+          {
+            isOptional &&
+            <div style={{fontSize: 11, marginLeft: 5, color: 'grey', paddingBottom: 2}}>
+              (Optionnel)
+            </div>}
+        </div>
+      }
+      <OldTextField
+        disabled={disabled}
+        fullWidth={fullWidth}
+        autoComplete='off'
+        style={{...style}}
+        value={value}
+        onChange={(e) => action(e.target.value)}
+        sx={{
+          '& .MuiOutlinedInput-root': {
+            '&:hover fieldset': {
+              borderColor: !disabled && config.colors.primary,
+            },
+            '&.Mui-focused fieldset': {
+              borderColor: config.colors.primary
+            }
+          }
+        }}
+      />
+    </div>
   )
 }
 

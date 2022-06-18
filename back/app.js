@@ -14,13 +14,11 @@ app.use(cors())
 app.use(express.json())
 app.listen(PORT, () => {})
 
-client.connect((err) => {
-  if (err !== undefined) {console.log(err)}
-
+client.connect(() => {
   films = client.db('arrays').collection('films')
 })
 
-app.put('/put/films', (req, res) => {
+app.put('/put/array/films', (req, res) => {
   films.insertOne(req.body)
   res.send('OK')
 })
@@ -31,18 +29,14 @@ app.get('/get/films', (req, res) => {
   })
 })
 
-app.delete('/delete/:id', (req, res) => {
-  let id = req.params.id
-
-  films.deleteOne({_id: mongo.ObjectId(id)})
+app.delete('/delete/array/:id', (req, res) => {
+  films.deleteOne({_id: mongo.ObjectId(req.params.id)})
   res.send('OK')
 })
 
-app.patch('/update/:id', (req, res) => {
+app.patch('/update/array/films/:id', (req, res) => {
   let id = req.params.id
 
   films.updateOne({_id: mongo.ObjectId(id)}, {$set: req.body})
-
-
   res.send('OK')
 })

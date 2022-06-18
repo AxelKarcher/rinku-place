@@ -1,35 +1,92 @@
-import {useEffect} from 'react'
-import {CircularProgress} from '@mui/material'
+import {useState, useEffect} from 'react'
+import AddIcon from '@mui/icons-material/Add'
 
 import FilterHead from '../FilterHead/FilterHead'
 import config from '../../config.json'
-import getArrayApi from '../../api/getArray'
+import getArray from '../../api/getArray'
 import useApi from '../../hooks/useApi'
+import TableElem from '../TableElem/TableElem'
+import Button from '../Button/Button'
+import ManageTableModal from '../ManageTableModal/ManageTableModal'
+import Title from '../Title/Title'
+import Spinner from '../Spinner/Spinner'
+import './Table.scss'
 
 const Table = ({style, filters, endpoint, title, width}) => {
 
-  const {data, loading, request} = useApi(getArrayApi.getArray)
+  const [isModal, setIsModal] = useState(false)
+  const [needRefresh, setNeedRefresh] = useState(false)
+  const [preData, setPreData] = useState()
+  const [usedData, setUsedData] = useState()
+  const [lastSort, setLastSort] = useState('')
+
+  const {data, loading, request} = useApi(getArray.getArray)
 
   useEffect(() => {handleGet()}, [])
 
+  useEffect(() => {
+    if (data !== undefined) {
+      setUsedData(data)
+    }
+  }, [data])
+
+  useEffect(() => {
+    if (needRefresh) {
+      handleGet()
+      setNeedRefresh(false)
+    }
+  }, [needRefresh])
+
+  useEffect(() => {if (preData !== undefined) {setIsModal(true)}}, [preData])
+
   const handleGet = async () => {await request(endpoint)}
 
-  console.log(data[0]['name'])
+  const handleCloseModal = () => {
+    setIsModal(false)
+    setPreData(undefined)
+  }
+
+  const handleSort = (type) => {
+    let newUsedData = [...usedData]
+
+    newUsedData = usedData.sort((a, b) =>
+      (a[type] > b[type]) ? 1 : ((b[type] > a[type]) ? -1 : 0))
+
+    if (lastSort === '' || lastSort !== type) {
+      setLastSort(type)
+      setUsedData(newUsedData)
+    } else if (lastSort === type) {
+      setUsedData([...newUsedData].reverse())
+      setLastSort('')
+    }
+  }
+
   return (
-    <div style={{display: 'flex', flexDirection: 'column', backgroundColor: config.colors.text,
-      padding: 30, borderRadius: 15, width: width, ...style}}
+    <div style={{display: 'flex', flexDirection: 'column', width: width,
+      backgroundColor: config.colors.light, padding: config.padding,
+      borderRadius: config.borderRadius, ...style}}
     >
+      <ManageTableModal
+        isOn={isModal}
+        handleClose={() => handleCloseModal()}
+        filters={filters}
+        refreshSetter={() => setNeedRefresh(true)}
+        endpoint={endpoint}
+        preData={preData}
+      />
       {/* Titre */}
-      <div style={{fontSize: 50, fontWeight: 'bold', color: config.colors.primary,
-        marginBottom: 20}}
+      <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+       marginBottom: config.titleMargiBottom}}
       >
-        {title}
+        <Title label={title} />
+        <Button icon={<AddIcon />} action={() => setIsModal(true)} />
       </div>
       {/* Filtres */}
-      <div style={{display: 'flex', marginBottom: 20}}>
+      <div style={{display: 'flex', justifyContent: 'space-between', marginBottom: 20}}>
         {filters.map((elem, i) => (
           <FilterHead
             disabled={loading || data?.length === 0 || elem?.disabled}
+            action={() => handleSort(elem.field)}
             width={elem.width}
             key={i}
             label={elem.label}
@@ -42,24 +99,27 @@ const Table = ({style, filters, endpoint, title, width}) => {
         {
           loading
           ?
-          <div style={{display: 'flex', justifyContent: 'center'}}>
-            <CircularProgress sx={{color: config.colors.primary}} />
-          </div>
+          <Spinner />
           :
           data?.length === 0
           ?
-          <div>No data</div>
+          <div style={{display: 'flex', justifyContent: 'center'}}>Rien à afficher</div>
           :
-          data?.map((elem1, i1) => (
+          usedData?.map((elem1, i1) => (
             <div
               key={i1}
-              style={{display: 'flex', alignItems: 'center',
-                marginBottom: i1 !== (data?.length - 1) ? 10 : 0}}
+              style={{marginBottom: i1 !== (usedData?.length - 1) ? 5 : 0,
+                borderRadius: config.borderRadius}}
+              className='tableRow'
+              onClick={() => setPreData(elem1)}
             >
               {filters.map((elem2, i2) => (
-                <div key={i2} style={{width: elem2.width}}>
-                  {elem1[i2] || '-'}
-                </div>
+                <TableElem
+                  key={i2}
+                  data={elem1[elem2?.field] || '-'}
+                  width={elem2.width}
+                  type={elem2.field}
+                />
               ))}
             </div>
           ))

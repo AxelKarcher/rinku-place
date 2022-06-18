@@ -3,6 +3,9 @@
     "background": "#000A2F",
     "primary": "#0024A6",
     "secondary": "#0032E6",
-    "text": "rgb(211, 211, 211)"
-  }
+    "light": "rgb(211, 211, 211)"
+  },
+  "padding": 30,
+  "titleMargiBottom": 30,
+  "borderRadius": 10
 }

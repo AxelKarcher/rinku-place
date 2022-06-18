@@ -1,7 +1,7 @@
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 
-const FilterHead = ({label, width, notSortable, onClick, disabled, style}) => {
+const FilterHead = ({label, width, notSortable, action, disabled, style}) => {
   return (
     <div
       style={{
@@ -14,7 +14,7 @@ const FilterHead = ({label, width, notSortable, onClick, disabled, style}) => {
         fontWeight: 'bold',
         ...style
       }}
-      onClick={onClick}
+      onClick={action}
     >
       {
         (notSortable === undefined || !notSortable) &&

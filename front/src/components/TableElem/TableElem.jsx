@@ -7,12 +7,12 @@ const TableElem = ({data, type, width, style}) => {
   const renderData = () => {
     switch (type) {
       case 'note': return (
-        <div>
+        <div style={{pointerEvents: 'none'}}>
           <RtStar
             stars={5}
             activeColor={config.colors.primary}
             inactiveColor='grey'
-            value={3}
+            value={data}
             size={20}
           />
         </div>

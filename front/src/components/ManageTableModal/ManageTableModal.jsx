@@ -9,12 +9,12 @@ import config from '../../config.json'
 import Title from '../Title/Title'
 import TextField from '../TextField/TextField'
 import Button from '../Button/Button'
-import Select from '../Select/Select'
 import Spinner from '../Spinner/Spinner'
 import putArray from '../../api/putArray'
 import useApi from '../../hooks/useApi'
 import updateArray from '../../api/updateArray'
 import deleteArray from '../../api/deleteArray'
+import Slider from '../Slider/Slider'
 
 const ManageTableModal = ({isOn, handleClose, preData, filters,
   refreshSetter, endpoint}) => {
@@ -98,6 +98,31 @@ const ManageTableModal = ({isOn, handleClose, preData, filters,
     preClose()
   }
 
+  const renderData = (elem, i) => {
+    switch (elem?.field) {
+      case 'note': return (
+        <Slider
+          value={infos[Object.keys(infos)[i]]}
+          action={(e) => handleInfos(i, e)}
+          disabled={toConfirm}
+          label={elem.label}
+          max={5}
+          min={0}
+          step={0.5}
+        />
+      )
+      default: return (
+        <TextField
+          disabled={toConfirm}
+          value={infos[Object.keys(infos)[i]]}
+          isOptional={elem.optional}
+          label={elem.label}
+          action={(e) => handleInfos(i, e)}
+        />
+      )
+    }
+  }
+
   return (
     <Modal
       open={isOn}
@@ -120,31 +145,7 @@ const ManageTableModal = ({isOn, handleClose, preData, filters,
             ?
             <Spinner />
             :
-            filters?.map((elem, i) => (
-              <div key={i}>
-                {
-                  elem?.field === 'note'
-                  ?
-                  <Select
-                    disabled={toConfirm}
-                    fullWidth
-                    value={infos[Object.keys(infos)[i]]}
-                    label={elem.label}
-                    isOptional={elem.optional}
-                    type={elem.field}
-                    action={(e) => handleInfos(i, e)}
-                  />
-                  :
-                  <TextField
-                    disabled={toConfirm}
-                    value={infos[Object.keys(infos)[i]]}
-                    isOptional={elem.optional}
-                    label={elem.label}
-                    action={(e) => handleInfos(i, e)}
-                  />
-                }
-              </div>
-            ))
+            filters?.map((elem, i) => (<div key={i}>{renderData(elem, i)}</div>))
           }
         </div>
         {/* Boutons du bas */}

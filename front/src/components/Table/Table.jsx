@@ -19,8 +19,10 @@ const Table = ({style, filters, endpoint, title, width}) => {
   const [preData, setPreData] = useState()
   const [usedData, setUsedData] = useState()
   const [lastSort, setLastSort] = useState('')
+  const [isTimeout, setIsTimeout] = useState(false)
+  const [checkTimeout, setCheckTimeout] = useState(false)
 
-  const {data, loading, request} = useApi(getArray.getArray)
+  const {data, loading, request, error} = useApi(getArray.getArray)
 
   useEffect(() => {handleGet()}, [])
 
@@ -39,7 +41,15 @@ const Table = ({style, filters, endpoint, title, width}) => {
 
   useEffect(() => {if (preData !== undefined) {setIsModal(true)}}, [preData])
 
-  const handleGet = async () => {await request(endpoint)}
+  useEffect(() => {
+    if (!checkTimeout) {return}
+    if (data === undefined) {setIsTimeout(true)}
+  }, [checkTimeout])
+
+  const handleGet = async () => {
+    setTimeout(() => {setCheckTimeout(true)}, 5000)
+    await request(endpoint)
+  }
 
   const handleCloseModal = () => {
     setIsModal(false)
@@ -79,7 +89,7 @@ const Table = ({style, filters, endpoint, title, width}) => {
        marginBottom: config.titleMargiBottom}}
       >
         <Title label={title} />
-        <Button icon={<AddIcon />} action={() => setIsModal(true)} />
+        <Button icon={<AddIcon />} action={() => setIsModal(true)} disabled={loading} />
       </div>
       {/* Filtres */}
       <div style={{display: 'flex', justifyContent: 'space-between', marginBottom: 20}}>
@@ -97,6 +107,10 @@ const Table = ({style, filters, endpoint, title, width}) => {
       {/* Valeurs */}
       <div>
         {
+          isTimeout
+          ?
+          <div style={{display: 'flex', justifyContent: 'center'}}>Timeout</div>
+          :
           loading
           ?
           <Spinner />

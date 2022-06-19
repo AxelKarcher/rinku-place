@@ -92,9 +92,10 @@ const Table = ({style, filters, endpoint, title, width}) => {
         <Button icon={<AddIcon />} action={() => setIsModal(true)} disabled={loading} />
       </div>
       {/* Filtres */}
-      <div style={{display: 'flex', justifyContent: 'space-between', marginBottom: 20}}>
+      <div style={{display: 'flex', justifyContent: 'space-between', marginBottom: 20, padding: 5}}>
         {filters.map((elem, i) => (
           <FilterHead
+            style={{backgroundColor: elem.color}}
             disabled={loading || data?.length === 0 || elem?.disabled}
             action={() => handleSort(elem.field)}
             width={elem.width}
@@ -123,12 +124,13 @@ const Table = ({style, filters, endpoint, title, width}) => {
             <div
               key={i1}
               style={{marginBottom: i1 !== (usedData?.length - 1) ? 5 : 0,
-                borderRadius: config.borderRadius}}
+                borderRadius: config.borderRadius, padding: 5}}
               className='tableRow'
               onClick={() => setPreData(elem1)}
             >
               {filters.map((elem2, i2) => (
                 <TableElem
+                  style={{backgroundColor: elem2.color}}
                   key={i2}
                   data={elem1[elem2?.field] || '-'}
                   width={elem2.width}

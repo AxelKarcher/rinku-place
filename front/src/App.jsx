@@ -1,29 +1,33 @@
-import './App.scss'
-import config from './config.json'
-import Table from './components/Table/Table'
+import {BrowserRouter, Routes, Route, Navigate} from 'react-router-dom'
 
-// bordures du Select
+import ArrayPage from './pages/ArrayPage/ArrayPage'
+import AuthPage from './pages/AuthPage/AuthPage'
+import NotFoundPage from './pages/NotFoundPage/NotFoundPage'
+import './App.scss'
+import config from '../src/config.json'
+
+// NotFoundPage archi pour grand bouton ok ? (div alone)
 // recherche d'un film
-// changer rentrée de la note
+// bordures du Select
 
 const App = () => {
 
-  const filters = [
-    {label: 'Nom', field: 'name', width: '30%'},
-    {label: 'Année de sortie', type: 'date', field: 'out', width: '17%'},
-    {label: 'Vue en', field: 'seen', type: 'date', width: '12%'},
-    {label: 'Univers', field: 'universe', optional: true, width: '15%'},
-    {label: 'Note', field: 'note', width: '12%'}
+  const routes = [
+    {path: '/', elem: <Navigate replace to='/auth' />},
+    {path: '/auth', elem: <AuthPage />},
+    {path: '/arrays', elem: <ArrayPage />},
+    {path: '*', elem: <NotFoundPage />}
   ]
 
   return (
     <div id='appContainer' style={{backgroundColor: config.colors.background}}>
-      <Table
-        filters={filters}
-        endpoint='films'
-        title='Suivi de films'
-        width='60%'
-      />
+      <BrowserRouter>
+        <Routes>
+          {routes.map(({path, elem}, i) => (
+            <Route key={i} path={path} element={elem} />
+          ))}
+        </Routes>
+      </BrowserRouter>
     </div>
   )
 }

@@ -1,14 +1,4 @@
 #appContainer {
   user-select: none;
   height: 100vh;
-  background-color: rgb(2, 0, 29);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  .panel {
-    background-color: rgb(230, 230, 230);
-    padding: 20px;
-  }
 }

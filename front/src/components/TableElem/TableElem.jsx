@@ -1,4 +1,4 @@
-import RtStar from 'react-rtstar'
+import StarRatings from 'react-star-ratings'
 
 import config from '../../config.json'
 
@@ -8,12 +8,13 @@ const TableElem = ({data, type, width, style}) => {
     switch (type) {
       case 'note': return (
         <div style={{pointerEvents: 'none'}}>
-          <RtStar
-            stars={5}
-            activeColor={config.colors.primary}
-            inactiveColor='grey'
-            value={data}
-            size={20}
+          <StarRatings
+            rating={data}
+            starRatedColor={config.colors.primary}
+            starEmptyColor='grey'
+            numberOfStars={5}
+            starDimension='20px'
+            starSpacing='1px'
           />
         </div>
       )
@@ -24,7 +25,7 @@ const TableElem = ({data, type, width, style}) => {
 
   return (
     <div style={{width: width, ...style}}>
-      <div style={{paddingLeft: 10}}>{renderData()}</div>
+      <div style={{paddingLeft: 5}}>{renderData()}</div>
     </div>
   )
 }

@@ -2,10 +2,11 @@ const express = require('express')
 const cors = require('cors')
 const {MongoClient, ServerApiVersion} = require('mongodb')
 const mongo = require('mongodb')
+require('dotenv').config()
 
 const app = express()
-const PORT = 8080
-const mongoUri = 'mongodb+srv://admin:admin@cluster0.bzba9sv.mongodb.net/?retryWrites=true&w=majority'
+const PORT = process.env.PORT
+const mongoUri = process.env.MONGO_URL
 const client = new MongoClient(mongoUri, {useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1})
 
 let films

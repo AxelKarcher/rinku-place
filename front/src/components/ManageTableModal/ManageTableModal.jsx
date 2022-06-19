@@ -159,7 +159,7 @@ const ManageTableModal = ({isOn, handleClose, preData, filters,
               {
                 toConfirm
                 ?
-                // Boutons de confirmation
+                /* Boutons de confirmation */
                 <>
                   <Button
                     style={{marginRight: 20}}
@@ -172,7 +172,7 @@ const ManageTableModal = ({isOn, handleClose, preData, filters,
                   />
                 </>
                 :
-                // Boutons de base
+                /* Boutons de base */
                 <>
                   <Button
                     disabled={isOneNotOk}

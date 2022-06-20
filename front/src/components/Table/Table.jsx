@@ -86,7 +86,7 @@ const Table = ({style, filters, endpoint, title, width}) => {
       />
       {/* Titre */}
       <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-       marginBottom: config.titleMargiBottom}}
+       marginBottom: config.titleMarginBottom}}
       >
         <Title label={title} />
         <Button icon={<AddIcon />} action={() => setIsModal(true)} disabled={loading} />

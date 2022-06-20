@@ -6,6 +6,7 @@
     "light": "rgb(211, 211, 211)"
   },
   "padding": 30,
-  "titleMargiBottom": 30,
+  "titleMarginBottom": 30,
+  "marginBottom": 20,
   "borderRadius": 10
 }

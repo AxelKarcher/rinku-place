@@ -135,11 +135,11 @@ const ManageTableModal = ({isOn, handleClose, preData, filters,
           borderRadius: config.borderRadius}}
       >
         <Title
-          style={{marginBottom: config.titleMargiBottom}}
+          style={{marginBottom: config.titleMarginBottom}}
           label={(toConfirm ? 'Supprimer' : preData ?
             'Modifier' : 'Ajouter') + ' une ligne'}
         />
-        <div id='modalGrid' style={{marginBottom: config.titleMargiBottom}}>
+        <div id='modalGrid' style={{marginBottom: config.titleMarginBottom}}>
           {
             infos === undefined
             ?

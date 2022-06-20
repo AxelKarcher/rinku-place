@@ -9,7 +9,7 @@ const PORT = process.env.PORT
 const mongoUri = process.env.MONGO_URL
 const client = new MongoClient(mongoUri, {useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1})
 
-let films
+let films, users
 
 app.use(cors())
 app.use(express.json())
@@ -17,6 +17,22 @@ app.listen(PORT, () => {})
 
 client.connect(() => {
   films = client.db('arrays').collection('films')
+  users = client.db('db').collection('users')
+})
+
+app.post('/auth/:status', (req, res) => {
+  let tmp
+
+  if (req.params.status === 'login') {
+    users.find({pseudo: req.body.pseudo}).toArray((err, result) => {
+      tmp = JSON.stringify(result)
+    })
+    console.log('tmp:', tmp)
+    res.send('OK')
+
+  } else {
+    res.send('registering')
+  }
 })
 
 app.put('/put/array/films', (req, res) => {

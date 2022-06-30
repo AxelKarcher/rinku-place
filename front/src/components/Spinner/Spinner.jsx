@@ -1,6 +1,6 @@
 import {CircularProgress} from '@mui/material'
 
-import config from '../../config.json'
+import config from '../../config.js'
 
 const Spinner = ({left}) => {
   return (

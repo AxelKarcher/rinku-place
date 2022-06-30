@@ -1,9 +1,13 @@
-import config from '../../config.json'
+import config from '../../config.js'
+
+import './Panel.scss'
 
 const Panel = ({children, style}) => {
   return (
-    <div style={{backgroundColor: config.colors.light, padding: config.padding,
-      borderRadius: config.borderRadius, ...style}}
+    <div
+      id='panelContainer'
+      style={{backgroundColor: config.colors.light, padding: config.padding,
+        borderRadius: config.borderRadius, ...style}}
     >
       {children}
     </div>

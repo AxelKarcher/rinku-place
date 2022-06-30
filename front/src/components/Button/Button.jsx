@@ -1,6 +1,6 @@
 import {useState} from 'react'
 
-import config from '../../config.json'
+import {colors, borderRadius} from '../../config.js'
 import './Button.scss'
 
 const Button = ({label, icon, action, disabled, style}) => {
@@ -15,13 +15,12 @@ const Button = ({label, icon, action, disabled, style}) => {
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
       style={{
-        backgroundColor: disabled ? 'grey' : config.colors.primary,
+        backgroundColor: disabled ? 'grey' : colors.primary,
         cursor: disabled ? 'initial' : 'pointer',
-        color: disabled ? 'lightgrey' : config.colors.light,
+        color: disabled ? 'lightgrey' : colors.light,
         borderColor: disabled ? 'grey' :
-          isHover ? config.light : config.colors.primary,
-        borderRadius: config.borderRadius,
-        ...style
+          isHover ? colors.light : colors.primary,
+        borderRadius: borderRadius, ...style
       }}
     >
       <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>

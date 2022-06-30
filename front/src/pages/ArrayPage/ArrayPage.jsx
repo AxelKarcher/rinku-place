@@ -1,5 +1,6 @@
 import Table from '../../components/Table/Table'
 import './ArrayPage.scss'
+import Header from '../../components/Header/Header'
 
 const ArrayPage = () => {
 
@@ -13,10 +14,11 @@ const ArrayPage = () => {
 
   return (
     <div id='arrayPageContainer'>
+      <Header />
       <Table
         filters={filters}
         endpoint='films'
-        title='Suivi de films'
+        title='Films'
         width='60%'
       />
     </div>

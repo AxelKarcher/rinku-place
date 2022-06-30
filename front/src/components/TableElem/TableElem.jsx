@@ -1,6 +1,6 @@
 import StarRatings from 'react-star-ratings'
 
-import config from '../../config.json'
+import config from '../../config.js'
 
 const TableElem = ({data, type, width, style}) => {
 

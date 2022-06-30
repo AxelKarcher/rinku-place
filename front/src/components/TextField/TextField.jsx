@@ -1,9 +1,9 @@
 import OldTextField from '@mui/material/TextField'
 
-import config from '../../config.json'
+import config from '../../config.js'
 
 const TextField = ({value, style, fullWidth, action,
-  label, disabled, isOptional}) => {
+  label, disabled, isOptional, handleConfirm}) => {
   return (
     <div style={{display: 'flex', flexDirection: 'column'}}>
       {
@@ -24,6 +24,7 @@ const TextField = ({value, style, fullWidth, action,
         style={{...style}}
         value={value}
         onChange={(e) => action(e.target.value)}
+        onKeyPress={(e) => e.key === 'Enter' && handleConfirm()}
         sx={{
           '& .MuiOutlinedInput-root': {
             '&:hover fieldset': {

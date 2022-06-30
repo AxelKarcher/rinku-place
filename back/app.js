@@ -20,16 +20,18 @@ client.connect(() => {
   users = client.db('db').collection('users')
 })
 
-app.post('/auth/:status', (req, res) => {
+app.post('/auth/:authStatus', (req, res) => {
   let tmp
 
-  if (req.params.status === 'login') {
-    users.find({pseudo: req.body.pseudo}).toArray((err, result) => {
-      tmp = JSON.stringify(result)
+  if (req.params.authStatus === 'login') {
+    users.find({pseudo: req.body.pseudo}).toArray((err, response) => {
+      tmp = response[0]
+      if (tmp.password === req.body.password) {
+        res.send('OK')
+      } else {
+        res.send('KO')
+      }
     })
-    console.log('tmp:', tmp)
-    res.send('OK')
-
   } else {
     res.send('registering')
   }
@@ -41,8 +43,8 @@ app.put('/put/array/films', (req, res) => {
 })
 
 app.get('/get/films', (req, res) => {
-  films.find({}).toArray((err, result) => {
-    res.send(JSON.stringify(result))
+  films.find({}).toArray((err, response) => {
+    res.send(JSON.stringify(response))
   })
 })
 

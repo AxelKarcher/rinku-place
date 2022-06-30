@@ -1,6 +1,6 @@
 import {Slider as OldSlider} from '@mui/material'
 
-import config from '../../config.json'
+import config from '../../config.js'
 
 const Slider = ({value, action, disabled, label, max, min, step}) => {
   return (

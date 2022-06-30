@@ -1,4 +1,4 @@
-{
+module.exports = {
   "colors": {
     "background": "#000A2F",
     "primary": "#0024A6",
@@ -7,6 +7,6 @@
   },
   "padding": 30,
   "titleMarginBottom": 30,
-  "marginBottom": 20,
+  "marginVertical": 20,
   "borderRadius": 10
 }

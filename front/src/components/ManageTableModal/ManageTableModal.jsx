@@ -5,7 +5,7 @@ import CloseIcon from '@mui/icons-material/Close'
 import DeleteIcon from '@mui/icons-material/Delete'
 
 import './ManageTableModal.scss'
-import config from '../../config.json'
+import config from '../../config.js'
 import Title from '../Title/Title'
 import TextField from '../TextField/TextField'
 import Button from '../Button/Button'

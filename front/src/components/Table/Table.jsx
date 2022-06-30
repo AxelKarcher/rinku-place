@@ -2,7 +2,7 @@ import {useState, useEffect} from 'react'
 import AddIcon from '@mui/icons-material/Add'
 
 import FilterHead from '../FilterHead/FilterHead'
-import config from '../../config.json'
+import config, {marginVertical} from '../../config.js'
 import getArray from '../../api/getArray'
 import useApi from '../../hooks/useApi'
 import TableElem from '../TableElem/TableElem'
@@ -74,7 +74,8 @@ const Table = ({style, filters, endpoint, title, width}) => {
   return (
     <div style={{display: 'flex', flexDirection: 'column', width: width,
       backgroundColor: config.colors.light, padding: config.padding,
-      borderRadius: config.borderRadius, ...style}}
+      borderRadius: config.borderRadius, marginTop: marginVertical * 2,
+      marginBottom: marginVertical * 2, ...style}}
     >
       <ManageTableModal
         isOn={isModal}
@@ -92,7 +93,7 @@ const Table = ({style, filters, endpoint, title, width}) => {
         <Button icon={<AddIcon />} action={() => setIsModal(true)} disabled={loading} />
       </div>
       {/* Filtres */}
-      <div style={{display: 'flex', justifyContent: 'space-between', marginBottom: 20, padding: 5}}>
+      <div style={{display: 'flex', justifyContent: 'space-between', padding: 5}}>
         {filters.map((elem, i) => (
           <FilterHead
             style={{backgroundColor: elem.color}}

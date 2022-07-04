@@ -1,5 +1,6 @@
 import {useState, useEffect} from 'react'
 import {useNavigate} from 'react-router-dom'
+import {useDispatch} from 'react-redux'
 
 import Container from '../../components/Container/Container'
 import Panel from '../../components/Panel/Panel'
@@ -10,8 +11,11 @@ import Button from '../../components/Button/Button'
 import Spinner from '../../components/Spinner/Spinner'
 import auth from '../../api/auth'
 import useApi from '../../hooks/useApi'
+import {setToken} from '../../redux/tokenSlice'
 
 const AuthPage = () => {
+
+  const dispatch = useDispatch()
 
   const navigate = useNavigate()
 
@@ -28,7 +32,12 @@ const AuthPage = () => {
     setInfos(newInfos)
   }
 
-  useEffect(() => {if (data === 'OK') {navigate('/arrays')}}, [data])
+  useEffect(() => {
+    if (data === 'OK') {
+      dispatch(setToken('TOKEN OK'))
+      navigate('/arrays')
+    }
+  }, [data])
 
   const handleTry = () => {
     if (infos.pseudo === '' || infos.password === '' ||

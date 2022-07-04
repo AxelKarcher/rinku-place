@@ -1,11 +1,12 @@
 import {BrowserRouter, Routes, Route, Navigate} from 'react-router-dom'
-import {QueryClient, QueryClientProvider} from 'react-query'
+import {Provider} from 'react-redux'
 
 import ArrayPage from './pages/ArrayPage/ArrayPage'
 import AuthPage from './pages/AuthPage/AuthPage'
 import NotFoundPage from './pages/NotFoundPage/NotFoundPage'
 import './App.scss'
-import {colors} from '../src/config.js'
+import {colors} from './config'
+import {store} from './redux/store'
 
 // recherche d'un film
 // bordures du Select
@@ -19,10 +20,8 @@ const App = () => {
     {path: '*', elem: <NotFoundPage />}
   ]
 
-  const queryClient = new QueryClient()
-
   return (
-    <QueryClientProvider client={queryClient}>
+    <Provider store={store}>
       <div id='appContainer' style={{backgroundColor: colors.background}}>
         <BrowserRouter>
           <Routes>
@@ -32,7 +31,7 @@ const App = () => {
           </Routes>
         </BrowserRouter>
       </div>
-    </QueryClientProvider>
+    </Provider>
   )
 }
 

@@ -1,8 +1,12 @@
+import {useSelector} from 'react-redux'
+
 import Table from '../../components/Table/Table'
 import './ArrayPage.scss'
 import Header from '../../components/Header/Header'
 
 const ArrayPage = () => {
+
+  const token = useSelector((state) => state.token.value)
 
   const filters = [
     {label: 'Nom', field: 'name', width: '30%'},

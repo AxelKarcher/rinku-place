@@ -9,7 +9,7 @@ import TextField from '../../components/TextField/TextField'
 import {colors, marginVertical, titleMarginBottom} from '../../config.js'
 import Button from '../../components/Button/Button'
 import Spinner from '../../components/Spinner/Spinner'
-import auth from '../../api/auth'
+import users from '../../api/users'
 import useApi from '../../hooks/useApi'
 import {setToken} from '../../redux/tokenSlice'
 
@@ -21,31 +21,35 @@ const AuthPage = () => {
 
   const [isRegister, setIsRegister] = useState(false)
   const [infos, setInfos] = useState({pseudo: '', mail: '', password: ''})
-  const [isTryable, setIsTryable] = useState(true)
+  const [isTryError, setIsTryError] = useState(false)
 
-  const {data, loading, request} = useApi(auth.auth)
+  const {data, isLoading, request, isError} = useApi(users.users)
+
+  useEffect(() => {
+    if (data?.token) {
+      dispatch(setToken(data.token))
+      navigate('/arrays')
+    }
+  }, [data])
+
+  useEffect(() => {setIsTryError(false)}, [isRegister])
+
+  useEffect(() => {if (isError) {setIsTryError(true)}}, [isError])
+
+  const handleTry = () => {
+    if (infos.pseudo === '' || infos.password === '' ||
+    (isRegister && infos.mail === '')) {
+      setIsTryError(true)
+    } else {
+      request(isRegister ? 'register' : 'login', infos)
+    }
+  }
 
   const handleInfos = (type, data) => {
     let newInfos = {...infos}
 
     newInfos[type] = data
     setInfos(newInfos)
-  }
-
-  useEffect(() => {
-    if (data === 'OK') {
-      dispatch(setToken('TOKEN OK'))
-      navigate('/arrays')
-    }
-  }, [data])
-
-  const handleTry = () => {
-    if (infos.pseudo === '' || infos.password === '' ||
-    (isRegister && infos.mail === '')) {
-      setIsTryable(false)
-    } else {
-      request(isRegister ? 'register' : 'login', infos)
-    }
   }
 
   return (
@@ -58,6 +62,7 @@ const AuthPage = () => {
       <Panel>
         <Title style={{marginBottom: titleMarginBottom}} label='Authentification' />
         <TextField
+          disabled={isLoading}
           style={{marginBottom: marginVertical}}
           label='Pseudo'
           value={infos.pseudo}
@@ -67,6 +72,7 @@ const AuthPage = () => {
         {
           isRegister &&
           <TextField
+            disabled={isLoading}
             style={{marginBottom: marginVertical}}
             label='Mail'
             value={infos.mail}
@@ -75,6 +81,7 @@ const AuthPage = () => {
           />
         }
         <TextField
+          disabled={isLoading}
           style={{marginBottom: marginVertical}}
           label='Mot de passe'
           value={infos.password}
@@ -82,27 +89,20 @@ const AuthPage = () => {
           handleConfirm={() => handleTry()}
         />
         {
-          loading
+          isLoading
           ?
           <Spinner />
           :
           <>
             <Button
               style={{marginBottom: marginVertical}}
-              label={!isTryable ? 'Non, réessaie' : isRegister ? 'Inscription' : 'Connexion'}
+              label={isTryError ? 'Non, réessaie' : isRegister ? 'Inscription' : 'Connexion'}
               action={() => handleTry()}
             />
             <Button
               label={isRegister ? 'Déjà un compte ?' : 'Pas de compte ?'}
               action={() => setIsRegister(!isRegister)}
             />
-            {
-              !isRegister &&
-              <Button
-                style={{marginTop: marginVertical}}
-                label='Mot de passe oublié ?'
-              />
-            }
           </>
         }
       </Panel>

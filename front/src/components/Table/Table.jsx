@@ -22,7 +22,7 @@ const Table = ({style, filters, endpoint, title, width}) => {
   const [isTimeout, setIsTimeout] = useState(false)
   const [checkTimeout, setCheckTimeout] = useState(false)
 
-  const {data, loading, request, error} = useApi(getArray.getArray)
+  const {data, isLoading, request} = useApi(getArray.getArray)
 
   useEffect(() => {handleGet()}, [])
 
@@ -90,14 +90,14 @@ const Table = ({style, filters, endpoint, title, width}) => {
        marginBottom: config.titleMarginBottom}}
       >
         <Title label={title} />
-        <Button icon={<AddIcon />} action={() => setIsModal(true)} disabled={loading} />
+        <Button icon={<AddIcon />} action={() => setIsModal(true)} disabled={isLoading} />
       </div>
       {/* Filtres */}
       <div style={{display: 'flex', justifyContent: 'space-between', padding: 5}}>
         {filters.map((elem, i) => (
           <FilterHead
             style={{backgroundColor: elem.color}}
-            disabled={loading || data?.length === 0 || elem?.disabled}
+            disabled={isLoading || isTimeout || data?.length === 0 || elem?.disabled}
             action={() => handleSort(elem.field)}
             width={elem.width}
             key={i}
@@ -111,15 +111,15 @@ const Table = ({style, filters, endpoint, title, width}) => {
         {
           isTimeout
           ?
-          <div style={{display: 'flex', justifyContent: 'center'}}>Timeout</div>
+          <div style={{display: 'flex', justifyContent: 'center'}}>Trop long à charger...</div>
           :
-          loading
+          isLoading
           ?
           <Spinner />
           :
           data?.length === 0
           ?
-          <div style={{display: 'flex', justifyContent: 'center'}}>Rien à afficher</div>
+          <div style={{display: 'flex', justifyContent: 'center'}}>Rien à afficher...</div>
           :
           usedData?.map((elem1, i1) => (
             <div

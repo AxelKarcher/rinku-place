@@ -1,12 +1,10 @@
-import {useSelector} from 'react-redux'
+import {useEffect} from 'react'
+import {useNavigate} from 'react-router-dom'
 
 import Table from '../../components/Table/Table'
-import './ArrayPage.scss'
-import Header from '../../components/Header/Header'
+import Container from '../../components/Container/Container'
 
 const ArrayPage = () => {
-
-  const token = useSelector((state) => state.token.value)
 
   const filters = [
     {label: 'Nom', field: 'name', width: '30%'},
@@ -16,16 +14,21 @@ const ArrayPage = () => {
     {label: 'Note', field: 'note', width: '12%'}
   ]
 
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (!JSON.parse(localStorage.getItem('token'))) {navigate('/auth')}
+  }, [])
+
   return (
-    <div id='arrayPageContainer'>
-      <Header />
+    <Container headerOnPage>
       <Table
         filters={filters}
-        endpoint='films'
+        dataField='films'
         title='Films'
         width='60%'
       />
-    </div>
+    </Container>
   )
 }
 

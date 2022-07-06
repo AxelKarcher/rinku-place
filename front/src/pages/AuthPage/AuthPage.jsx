@@ -1,21 +1,17 @@
 import {useState, useEffect} from 'react'
 import {useNavigate} from 'react-router-dom'
-import {useDispatch} from 'react-redux'
 
 import Container from '../../components/Container/Container'
 import Panel from '../../components/Panel/Panel'
 import Title from '../../components/Title/Title'
 import TextField from '../../components/TextField/TextField'
-import {colors, marginVertical, titleMarginBottom} from '../../config.js'
+import {colors, marginVertical, titleVertMargin} from '../../config.js'
 import Button from '../../components/Button/Button'
 import Spinner from '../../components/Spinner/Spinner'
 import users from '../../api/users'
 import useApi from '../../hooks/useApi'
-import {setToken} from '../../redux/tokenSlice'
 
 const AuthPage = () => {
-
-  const dispatch = useDispatch()
 
   const navigate = useNavigate()
 
@@ -27,7 +23,7 @@ const AuthPage = () => {
 
   useEffect(() => {
     if (data?.token) {
-      dispatch(setToken(data.token))
+      localStorage.setItem('token', JSON.stringify(data.token))
       navigate('/arrays')
     }
   }, [data])
@@ -53,14 +49,14 @@ const AuthPage = () => {
   }
 
   return (
-    <Container style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
+    <Container>
       <div style={{color: colors.light, fontSize: 50, fontWeight: 'bold',
-        marginBottom: titleMarginBottom}}
+        marginBottom: titleVertMargin, marginTop: titleVertMargin}}
       >
         rinku-place
       </div>
       <Panel>
-        <Title style={{marginBottom: titleMarginBottom}} label='Authentification' />
+        <Title label='Authentification' />
         <TextField
           disabled={isLoading}
           style={{marginBottom: marginVertical}}
@@ -81,6 +77,7 @@ const AuthPage = () => {
           />
         }
         <TextField
+          password
           disabled={isLoading}
           style={{marginBottom: marginVertical}}
           label='Mot de passe'

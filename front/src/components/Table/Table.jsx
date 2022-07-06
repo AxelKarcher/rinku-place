@@ -12,7 +12,9 @@ import Title from '../Title/Title'
 import Spinner from '../Spinner/Spinner'
 import './Table.scss'
 
-const Table = ({style, filters, endpoint, title, width}) => {
+const Table = ({style, filters, dataField, title, width}) => {
+
+  const token = JSON.parse(localStorage.getItem('token'))
 
   const [isModal, setIsModal] = useState(false)
   const [needRefresh, setNeedRefresh] = useState(false)
@@ -48,7 +50,7 @@ const Table = ({style, filters, endpoint, title, width}) => {
 
   const handleGet = async () => {
     setTimeout(() => {setCheckTimeout(true)}, 5000)
-    await request(endpoint)
+    await request(token, dataField)
   }
 
   const handleCloseModal = () => {
@@ -82,7 +84,7 @@ const Table = ({style, filters, endpoint, title, width}) => {
         handleClose={() => handleCloseModal()}
         filters={filters}
         refreshSetter={() => setNeedRefresh(true)}
-        endpoint={endpoint}
+        dataField={dataField}
         preData={preData}
       />
       {/* Titre */}
@@ -107,7 +109,7 @@ const Table = ({style, filters, endpoint, title, width}) => {
         ))}
       </div>
       {/* Valeurs */}
-      <div>
+      {/* <div>
         {
           isTimeout
           ?
@@ -141,7 +143,7 @@ const Table = ({style, filters, endpoint, title, width}) => {
             </div>
           ))
         }
-      </div>
+      </div> */}
     </div>
   )
 }

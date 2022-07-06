@@ -5,8 +5,8 @@ import HeaderChoice from '../HeaderChoice/HeaderChoice'
 const Header = () => {
 
   const choices = [
-    {label: 'Tableaux', route: 'arrays'},
-    {label: 'Mon compte', route: 'account'}
+    {label: 'Tableaux', route: '/arrays'},
+    {label: 'Mon compte', route: '/account'}
   ]
 
   return (

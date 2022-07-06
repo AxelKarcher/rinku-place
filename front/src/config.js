@@ -6,7 +6,7 @@ module.exports = {
     "light": "rgb(211, 211, 211)"
   },
   "padding": 30,
-  "titleMarginBottom": 30,
+  "titleVertMargin": 30,
   "marginVertical": 20,
   "borderRadius": 10
 }

@@ -1,8 +1,15 @@
-import './Container.scss'
+import Header from '../Header/Header'
 
-const Container = ({children, style}) => {
+const Container = ({children, headerOnPage, ...style}) => {
   return (
-    <div id='container' style={{...style}}>{children}</div>
+    <div style={{height: '100vh'}}>
+      {headerOnPage && <Header />}
+      <div style={{display: 'flex', justifyContent: 'center',
+        flexDirection: 'column', alignItems: 'center', ...style}}
+      >
+        {children}
+      </div>
+    </div>
   )
 }
 

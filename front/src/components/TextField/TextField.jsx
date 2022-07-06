@@ -3,7 +3,7 @@ import OldTextField from '@mui/material/TextField'
 import config from '../../config.js'
 
 const TextField = ({value, style, fullWidth, action,
-  label, disabled, isOptional, handleConfirm}) => {
+  label, disabled, isOptional, handleConfirm, password}) => {
   return (
     <div style={{display: 'flex', flexDirection: 'column'}}>
       {
@@ -18,6 +18,7 @@ const TextField = ({value, style, fullWidth, action,
         </div>
       }
       <OldTextField
+        type={password ? 'password' : 'text'}
         disabled={disabled}
         fullWidth={fullWidth}
         autoComplete='off'

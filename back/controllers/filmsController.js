@@ -1,12 +1,18 @@
 const asyncHandler = require('express-async-handler')
 
-// const filmModel = require('../models/filmModel')
+const parseHeaders = require('../utils/parseHeaders')
 const User = require('../models/userModel')
 
 const getFilms = asyncHandler(async (req, res) => {
-  films.find({}).toArray((err, response) => {
-    res.send(JSON.stringify(response))
-  })
+  const id = parseHeaders(req)
+  const films = await User.findOne({_id: id})
+
+  films.toArray((err, response) => {console.log('HOP:', JSON.stringify(response))})
+
+  res.send('OK')
+  // films.toArray((err, response) => {
+  //   res.send(JSON.stringify(response))
+  // })
 })
 
 const putFilm = asyncHandler(async (req, res) => {

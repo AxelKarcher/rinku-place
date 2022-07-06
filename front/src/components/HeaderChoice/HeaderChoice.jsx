@@ -11,7 +11,10 @@ const HeaderChoice = ({label, route}) => {
   const [isIt, setIsIt] = useState(false)
 
   useEffect(() => {
-    setIsIt(window.location.pathname.substring(1).indexOf(route) !== -1)
+    const routeToTest = route.substring(1)
+    const path = window.location.pathname.substring(1)
+
+    setIsIt(path.indexOf(routeToTest) !== -1)
   }, [window.location])
 
   return (

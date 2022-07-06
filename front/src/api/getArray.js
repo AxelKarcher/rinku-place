@@ -1,8 +1,13 @@
 import apiClient from './client'
 
-const getArray = (type) => {
+const getArray = (token, dataField) => {
   return (
-    apiClient.get('/get/' + type)
+    apiClient.get('/' + dataField + '/get', {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    }
+    )
   )
 }
 
